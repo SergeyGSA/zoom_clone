@@ -84,3 +84,14 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* clerk class override */
+.cl-userButtonPopoverActionButtonIcon,
+.cl-internal-164hve5,
+.cl-internal-4a7e9l {
+  filter: invert(1);
+}
+
+.cl-userButtonPopoverActionButtonText {
+  font-weight: 700;
+}
