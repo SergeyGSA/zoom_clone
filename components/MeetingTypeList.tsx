@@ -3,9 +3,10 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-import HomeCard from './HomeCard'
 import { HouseCardsHandlers, MeetingState } from '@/enums'
 import { homeCards } from '@/constants'
+import MeetingModal from './MeetingModal'
+import HomeCard from './HomeCard'
 
 
 const MeetingTypeList = () => {
@@ -19,6 +20,8 @@ const MeetingTypeList = () => {
     [HouseCardsHandlers.JoinMeeting]: () => setMeetingState(MeetingState.isJoiningMeeting)
   }
 
+  const createMeeting = () => {}
+
   return (
     <section className='grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4'>
       {homeCards.map(card => (
@@ -31,6 +34,15 @@ const MeetingTypeList = () => {
           key={card.title}
         />
       ))}
+
+      <MeetingModal
+        isOpen={meetingState === MeetingState.isInstantMeeting}
+        onClose={() => setMeetingState(undefined)}
+        title='Start an Instant Meeting'
+        className='text-center'
+        buttonText='Start Meeting'
+        handleClick={createMeeting}
+      />
     </section>
   )
 }
