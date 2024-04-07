@@ -6,7 +6,7 @@ import { useState } from 'react'
 
 import MeetingRoom from '@/components/MeetingRoom'
 import MeetingSetup from '@/components/MeetingSetup'
-import { useGetCallById } from '@/shared/hooks/UseGetCallById'
+import { useGetCallById } from '@/shared/hooks/useGetCallById'
 import Loader from '@/components/Loader'
 
 const Meeting = ({ params: { id } }: { params: { id: string } }) => {

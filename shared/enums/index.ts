@@ -10,3 +10,10 @@ export enum HouseCardsHandlers {
   ViewRecordings = 'viewRecordings',
   JoinMeeting = 'joinMeeting',
 }
+
+//TODO: Need to refactor this enum below
+export enum CallLayoutType {
+  Grid = 'grid',
+  SpeakerLeft = 'speaker-left',
+  SpeakerRight = 'speaker-right',
+}
