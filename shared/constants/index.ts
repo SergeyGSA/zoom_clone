@@ -1,4 +1,4 @@
-import { HouseCardsHandlers } from '@/enums'
+import { HouseCardsHandlers } from '@/shared/enums'
 
 export const sidebarLinks = [
   {

@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
 
-import { sidebarLinks } from '@/constants'
+import { sidebarLinks } from '@/shared/constants'
 
 const Sidebar = () => {
   const pathname = usePathname()
