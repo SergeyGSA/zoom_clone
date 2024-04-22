@@ -58,8 +58,8 @@ const CallList = ({ type }: PropsType) => {
 
   const setMeetingTitle = (meeting: Call | CallRecording): string => {
     if (meeting instanceof Call) {
-      // Instead of substring add text truncation and a tooltip
-      TODO: return meeting.state.custom.description.substring(0, 55)
+      TODO: // Instead of substring add text truncation and a tooltip
+      return meeting.state.custom.description?.substring(0, 55)
     }
 
     return 'No description'

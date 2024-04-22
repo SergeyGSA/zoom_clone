@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { LayoutList, Users } from 'lucide-react'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import {
   CallControls,
   CallParticipantsList,
@@ -33,6 +33,7 @@ const MeetingRoom = () => {
     CallLayoutType.SpeakerLeft
   )
   const [showParticipants, setShowParticipants] = useState(false)
+  const router = useRouter()
 
   const { useCallCallingState } = useCallStateHooks()
   const callingState = useCallCallingState()
@@ -80,7 +81,7 @@ const MeetingRoom = () => {
       </div>
 
       <div className='fixed bottom-0 flex w-full items-center justify-center gap-5 flex-wrap'>
-        <CallControls />
+        <CallControls onLeave={() => router.push('/')} />
 
         <DropdownMenu>
           <div className='flex items-center'>
