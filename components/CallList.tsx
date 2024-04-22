@@ -4,7 +4,7 @@ import { CallListType, MeetingCardIcons } from '@/shared/enums'
 import { useGetCalls } from '@/shared/hooks/useGetCalls'
 import { Call, CallRecording } from '@stream-io/video-react-sdk'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import MeetingCard from './MeetingCard'
 import Loader from './Loader'
 
@@ -17,12 +17,12 @@ const CallList = ({ type }: PropsType) => {
   const router = useRouter()
   const [recordings, setRecordings] = useState<CallRecording[]>([])
 
-  const getCalls = (): Call[] | undefined => {
+  const getCalls = (): Call[] | CallRecording[] | undefined => {
     switch (type) {
       case CallListType.Ended:
         return endedCalls
       case CallListType.Recordings:
-        return callRecordings
+        return recordings
       case CallListType.Upcoming:
         return upcomingCalls
       default:
@@ -58,8 +58,8 @@ const CallList = ({ type }: PropsType) => {
 
   const setMeetingTitle = (meeting: Call | CallRecording): string => {
     if (meeting instanceof Call) {
-      TODO: // Instead of substring add text truncation and a tooltip
-      return meeting.state.custom.description.substring(0, 55)
+      // Instead of substring add text truncation and a tooltip
+      TODO: return meeting.state.custom.description.substring(0, 55)
     }
 
     return 'No description'
@@ -89,17 +89,35 @@ const CallList = ({ type }: PropsType) => {
     throw new Error('Cannot set meeting link')
   }
 
-  const meetingCardHandler = (meeting: Call | CallRecording): () => void => {
+  const meetingCardHandler = (meeting: Call | CallRecording): (() => void) => {
     return () => {
       if (meeting instanceof Call) {
         router.push(`/meeting/${meeting.id}`)
       }
-  
+
       if (type === CallListType.Recordings && 'url' in meeting) {
         router.push(`${meeting.url}`)
       }
     }
   }
+
+  useEffect(() => {
+    const fetchRecordings = async () => {
+      const callData = await Promise.all(
+        callRecordings?.map(meeting => meeting.queryRecordings()) ?? []
+      )
+
+      const recordings = callData
+        .filter(call => call.recordings.length > 0)
+        .flatMap(call => call.recordings)
+
+      setRecordings(recordings)
+    }
+
+    if (type === CallListType.Recordings) {
+      fetchRecordings()
+    }
+  }, [type, callRecordings])
 
   const calls = getCalls()
   const noCallsMessage = getNoCallsMessage()
@@ -110,13 +128,15 @@ const CallList = ({ type }: PropsType) => {
     <div className='grid grid-cols-1 gap-5 xl:grid-cols-2'>
       {calls && calls.length > 0 ? (
         calls.map((meeting: Call | CallRecording) => (
-          <MeetingCard 
-            key={meeting instanceof Call ? meeting.id : meeting.start_time} 
+          <MeetingCard
+            key={meeting instanceof Call ? meeting.id : meeting.start_time}
             icon={setMeetingCardIcon()}
             title={setMeetingTitle(meeting)}
             date={setMeetingDate(meeting)}
             isPreviousMeeting={type === CallListType.Ended}
-            buttonIcon={type === CallListType.Recordings ? '/icons/play.svg' : undefined}
+            buttonIcon={
+              type === CallListType.Recordings ? '/icons/play.svg' : undefined
+            }
             buttonText={type === CallListType.Recordings ? 'Play' : 'Start'}
             link={setMeetingLink(meeting)}
             handleClick={meetingCardHandler(meeting)}
