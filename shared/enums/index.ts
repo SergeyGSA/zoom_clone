@@ -17,3 +17,15 @@ export enum CallLayoutType {
   SpeakerLeft = 'speaker-left',
   SpeakerRight = 'speaker-right',
 }
+
+export enum CallListType {
+  Upcoming = 'upcoming',
+  Recordings = 'recordings',
+  Ended = 'ended',
+}
+
+export enum MeetingCardIcons {
+  Ended = '/icons/previous.svg',
+  Upcoming = '/icons/upcoming.svg',
+  Recordings = '/icons/recordings.svg',
+}
